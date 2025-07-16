@@ -21,4 +21,5 @@ if st.button("Summarize"):
         st.success(" Summary Generated!")
         st.write("\\n\\n".join(summaries))
     else:
-        st.warning("Please paste some text first."
+        st.warning("Please paste some text first.")
+        
