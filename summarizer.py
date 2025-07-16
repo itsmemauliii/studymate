@@ -9,3 +9,8 @@ def summarize_text(text):
     summary_ids = model.generate(inputs, max_length=150, min_length=30, length_penalty=2.0, num_beams=4, early_stopping=True)
     output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return output
+
+try:
+    from transformers import T5Tokenizer, T5ForConditionalGeneration
+except ImportError as e:
+    raise ImportError("SentencePiece is required for T5Tokenizer. Please add `sentencepiece` to your requirements.txt") from e
