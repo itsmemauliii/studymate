@@ -1,19 +1,21 @@
 import re
-import nltk
-from nltk.tokenize import sent_tokenize
+import spacy
 
-# 🛡 Safe punkt loader
 try:
-    nltk.data.find("tokenizers/punkt")
-except LookupError:
-    nltk.download("punkt")
+    nlp = spacy.load("en_core_web_sm")
+except:
+    import os
+    os.system("python -m spacy download en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
 def clean_transcript(raw_text):
     cleaned = re.sub(r"\s+", " ", raw_text)
     return cleaned.strip()
 
 def chunk_text(text, max_tokens=400):
-    sentences = sent_tokenize(text)
+    doc = nlp(text)
+    sentences = [sent.text.strip() for sent in doc.sents]
+
     chunks, chunk = [], ""
     for sent in sentences:
         if len(chunk.split()) + len(sent.split()) < max_tokens:
@@ -24,3 +26,4 @@ def chunk_text(text, max_tokens=400):
     if chunk:
         chunks.append(chunk.strip())
     return chunks
+
