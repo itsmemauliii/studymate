@@ -1,11 +1,12 @@
 import re
 import spacy
 
+# Load or install the model (handles Streamlit Cloud too)
 try:
     nlp = spacy.load("en_core_web_sm")
-except:
-    import os
-    os.system("python -m spacy download en_core_web_sm")
+except OSError:
+    import subprocess
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
     nlp = spacy.load("en_core_web_sm")
 
 def clean_transcript(raw_text):
@@ -25,5 +26,5 @@ def chunk_text(text, max_tokens=400):
             chunk = sent
     if chunk:
         chunks.append(chunk.strip())
-    return chunks
 
+    return chunks
