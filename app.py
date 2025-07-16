@@ -1,20 +1,24 @@
-import gradio as gr
+import streamlit as st
 from summarizer import summarize_text
 from utils import clean_transcript, chunk_text
 
-def process_transcript(input_text):
-    cleaned = clean_transcript(input_text)
-    chunks = chunk_text(cleaned)
-    summaries = [summarize_text(chunk) for chunk in chunks]
-    final_summary = "\n\n".join(summaries)
-    return final_summary
+st.title("📚 StudyMate")
+st.subheader("Paste a YouTube transcript and get a concise summary to revise smarter!")
 
-app = gr.Interface(
-    fn=process_transcript,
-    inputs=gr.Textbox(lines=15, placeholder="Paste your YouTube transcript here..."),
-    outputs="text",
-    title="StudyMate",
-    description="Paste a YouTube transcript and get a concise summary to revise smarter!",
-)
+input_text = st.text_area("Transcript Input", height=300)
 
-app.launch()
+if st.button("Summarize"):
+    if input_text:
+        cleaned = clean_transcript(input_text)
+        chunks = chunk_text(cleaned)
+        summaries = []
+        for chunk in chunks:
+            try:
+                summary = summarize_text(chunk)
+                summaries.append(summary)
+            except Exception as e:
+                summaries.append(f"[ERROR in chunk]: {e}")
+        st.success("✅ Summary Generated!")
+        st.write("\n\n".join(summaries))
+    else:
+        st.warning("Please paste some text first.")
