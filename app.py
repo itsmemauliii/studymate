@@ -18,7 +18,7 @@ if st.button("Summarize"):
                 summaries.append(summary)
             except Exception as e:
                 summaries.append(f"[ERROR in chunk]: {e}")
-        st.success("✅ Summary Generated!")
-        st.write("\n\n".join(summaries))
+        st.success(" Summary Generated!")
+        st.write("\\n\\n".join(summaries))
     else:
-        st.warning("Please paste some text first.")
+        st.warning("Please paste some text first."
