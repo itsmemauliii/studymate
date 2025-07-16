@@ -2,13 +2,14 @@ import re
 import nltk
 from nltk.tokenize import sent_tokenize
 
+# 🛡 Safe punkt loader
 try:
     nltk.data.find("tokenizers/punkt")
 except LookupError:
     nltk.download("punkt")
 
 def clean_transcript(raw_text):
-    cleaned = re.sub(r"\\s+", " ", raw_text)
+    cleaned = re.sub(r"\s+", " ", raw_text)
     return cleaned.strip()
 
 def chunk_text(text, max_tokens=400):
